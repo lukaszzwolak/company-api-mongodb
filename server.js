@@ -16,12 +16,30 @@ mongoClient.connect(
       console.log("Successfully connected to the database");
       const db = client.db("companyDB");
 
+      db.collection("employees")
+        .find({ department: "IT" })
+        .toArray()
+        .then((data) => {
+          console.log("Employees from IT department (find)", data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      db.collection("employees")
+        .findOne({ department: "IT" })
+        .then((item) => {
+          console.log("Employee from IT department (findOne):", item);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       const app = express();
       app.use(cors());
       app.use(express.json());
       app.use(express.urlencoded({ extended: false }));
 
-      // Przekazujemy bazę danych do routerów:
       app.use("/api", employeesRoutes(db));
       app.use("/api", departmentsRoutes(db));
       app.use("/api", productsRoutes(db));
