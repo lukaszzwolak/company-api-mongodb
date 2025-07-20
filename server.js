@@ -16,30 +16,42 @@ mongoClient.connect(
       console.log("Successfully connected to the database");
       const db = client.db("companyDB");
 
-      db.collection("departments")
-        .insertOne({ name: "Management" })
-        .then(() => {
-          console.log("Department Management added");
-        })
-        .catch((err) => {
-          console.log("Insert error:", err);
-        });
+      // db.collection("departments")
+      //   .insertOne({ name: "Management" })
+      //   .then(() => {
+      //     console.log("Department Management added");
+      //   })
+      //   .catch((err) => {
+      //     console.log("Insert error:", err);
+      //   });
+
+      // db.collection("employees")
+      //   .find({ department: "IT" })
+      //   .toArray()
+      //   .then((data) => {
+      //     console.log("Employees from IT department (find)", data);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+
+      // db.collection("employees")
+      //   .findOne({ department: "IT" })
+      //   .then((item) => {
+      //     console.log("Employee from IT department (findOne):", item);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
 
       db.collection("employees")
-        .find({ department: "IT" })
-        .toArray()
-        .then((data) => {
-          console.log("Employees from IT department (find)", data);
-        })
+        .updateOne({ department: "IT" }, { $set: { salary: 6000 } })
         .catch((err) => {
           console.log(err);
         });
 
-      db.collection("employees")
-        .findOne({ department: "IT" })
-        .then((item) => {
-          console.log("Employee from IT department (findOne):", item);
-        })
+      db.collection("departments")
+        .deleteOne({ name: "Management" })
         .catch((err) => {
           console.log(err);
         });
