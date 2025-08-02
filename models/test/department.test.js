@@ -10,6 +10,16 @@ describe("Department Model", () => {
     expect(err.errors.name).to.exist;
   });
 
+  it('should throw an error if "name" is not a string', () => {
+    const cases = [{}, []];
+
+    for (let name of cases) {
+      const dep = new Department({ name });
+      const err = dep.validateSync();
+      expect(err.errors.name).to.exist;
+    }
+  });
+
   after(() => {
     mongoose.models = {};
   });
