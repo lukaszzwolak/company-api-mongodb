@@ -39,6 +39,7 @@ describe("Employee Model", () => {
     const err = emp.validateSync();
     expect(err).to.not.exist;
   });
+
   after(() => {
     mongoose.models = {};
   });
