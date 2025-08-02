@@ -33,9 +33,9 @@ describe("Department", () => {
       const department = await Department.findOne({ name: "Department #1" });
       expect(department.name).to.equal("Department #1");
     });
-  });
 
-  after(() => {
-    mongoose.models = {};
+    after(async () => {
+      await Department.deleteMany({});
+    });
   });
 });

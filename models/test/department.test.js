@@ -41,8 +41,4 @@ describe("Department Model", () => {
       });
     }
   });
-
-  after(() => {
-    mongoose.models = {};
-  });
 });
