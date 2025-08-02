@@ -1,12 +1,16 @@
-const Department = require("../../models/department");
+const Department = require("../department.model");
 const expect = require("chai").expect;
+const mongoose = require("mongoose");
 
 describe("Department Model", () => {
-  it('should throw an error if no "name" arg', async () => {
+  it('should throw an error if no "name" arg', () => {
     const dep = new Department({});
+    const err = dep.validateSync();
 
-    dep.validateSync((err) => {
-      expect(err.errors.name).to.exist;
-    });
+    expect(err.errors.name).to.exist;
+  });
+
+  after(() => {
+    mongoose.models = {};
   });
 });
