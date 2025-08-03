@@ -5,10 +5,12 @@ const expect = require("chai").expect;
 describe("Department", () => {
   before(async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/companyDBtest", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      if (mongoose.connection.readyState === 0) {
+        await mongoose.connect("mongodb://0.0.0.0:27017/companyDBtest", {
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        });
+      }
     } catch (err) {
       console.error(err);
     }
@@ -117,5 +119,6 @@ describe("Department", () => {
 
   after(async () => {
     await Department.deleteMany();
+    await mongoose.connection.close();
   });
 });
