@@ -1,7 +1,8 @@
-const expect = require("chai").expect;
+const mongoose = require("mongoose");
+const chai = require("chai");
 const chaiHttp = require("chai-http");
-const server = require("../../server");
-const Department = require("../../models/department.model");
+const server = require("../../../server");
+const Department = require("../../../models/department.model");
 
 chai.use(chaiHttp);
 
@@ -10,6 +11,13 @@ const request = chai.request;
 
 describe("GET /api/departments", () => {
   before(async () => {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect("mongodb://127.0.0.1:27017/companyDBtest", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+    }
+
     const testDepOne = new Department({
       _id: "5d9f1140f10a81216cfd4408",
       name: "Department #1",
@@ -22,12 +30,14 @@ describe("GET /api/departments", () => {
     });
     await testDepTwo.save();
   });
+
   it("/ should return all departments", async () => {
-    request(server).get("/api/departments");
-    expect(res).to.be.equal(200);
+    const res = await request(server).get("/api/departments");
+    expect(res.status).to.be.equal(200);
     expect(res.body).to.be.an("array");
     expect(res.body.length).to.be.equal(2);
   });
+
   it("/:id should return one department by id", async () => {
     const res = await request(server).get(
       "/api/departments/5d9f1140f10a81216cfd4408"
@@ -36,6 +46,7 @@ describe("GET /api/departments", () => {
     expect(res.body).to.be.an("object");
     expect(res.body).to.not.be.null;
   });
+
   it("/random should return one random department", async () => {
     const res = await request(server).get("/api/departments/random");
     expect(res.status).to.be.equal(200);
@@ -45,5 +56,6 @@ describe("GET /api/departments", () => {
 
   after(async () => {
     await Department.deleteMany();
+    await mongoose.connection.close();
   });
 });
