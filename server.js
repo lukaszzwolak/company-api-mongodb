@@ -19,9 +19,7 @@ else dbUri = "mongodb://0.0.0.0:27017/companyDB";
 mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
-db.once("open", () => {
-  console.log("Connected to the database");
-});
+db.once("open", () => {});
 db.on("error", (err) => console.log("MongoDB error:", err));
 
 app.use(cors());
@@ -38,9 +36,7 @@ app.use((req, res) => {
 
 // Start server only if not imported (for testing)
 if (NODE_ENV !== "test") {
-  app.listen(8000, () => {
-    console.log("Server is running on port: 8000");
-  });
+  console.log("Server is running on port: 8000");
 }
 
 module.exports = app;
