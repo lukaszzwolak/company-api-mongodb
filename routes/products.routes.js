@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const ProductController = require("../controllers/products.controller");
+const ProductController = require("../controllers/product.controller");
 
 router.get("/products", ProductController.getAll);
 router.get("/products/random", ProductController.getRandom);
